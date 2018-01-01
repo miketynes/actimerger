@@ -1,5 +1,6 @@
 library(dplyr)
 library(chron)
+library(magrittr)
 
 rm_summary_stats <- function(acti) {
   acti <- acti[complete.cases(acti["IntNum"]), ]
@@ -74,8 +75,8 @@ main <- function(path) {
   acti_list <- reshape_files(acti_files)
   outframe <- do.call(rbind, acti_list)
   outtime <- format(Sys.time(), "%Y.%m.%d-%H.%M.%S")
-  outname <- paste0("actimerged", outtime, ".csv")
+  outname <- paste0("actimerged_", outtime, ".csv")
   write.csv(outframe, outname, row.names = FALSE)
 }
 
-main()
+main(path)
