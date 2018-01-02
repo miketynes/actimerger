@@ -12,7 +12,7 @@ from a given interval type one subject at a time, or else dump ***all*** of the 
 each interval type--not something I think beleongs in a raw dataset. 
 
 ## Dependencies 
-Currently depends on dplyr, magrittr, and cron, although the tidyverse libraries are barely used and may be factored out.
+Currently depends on dplyr, magrittr, and chron, although the tidyverse libraries are barely used and may be factored out.
 
 ## Usage
 actimerger accepts a directory of AW .txt files (which are CSV formatted but given the .txt extension by AW). 
