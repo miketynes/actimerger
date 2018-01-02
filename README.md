@@ -2,8 +2,8 @@
 
 A tool for merging subject-level sleep actigraphy output from Action W-2 (AW). 
 
-It is currently only set up to select and merge data that we need in our lab, but soon users will be able to select desired data 
-by means through config file. 
+It is currently only set up to select and merge data that we need in our lab. I hope to set it up so that users will be able to select 
+desired variables using a config file. 
 
 ## Use case
 The need for this program arose when my PI wanted to save only a subset of variables from a subset of intervals for each subject
@@ -18,7 +18,7 @@ Currently depends on dplyr, magrittr, and chron, although the tidyverse librarie
 actimerger accepts a directory of AW .txt files (which are CSV formatted but given the .txt extension by AW). 
 You will want to use only the "ALL_INTERVALS" files, which can easily be moved to their own dir with 
 
-`mv *ALL_INTERVALS* /target`
+`mv *ALL_INTERVALS* /target/dir/for/data`
 
 Once the data is in its own dir, call
 
