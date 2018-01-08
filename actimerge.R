@@ -1,6 +1,6 @@
-library(dplyr)
-library(chron)
-library(magrittr)
+library(dplyr, quietly = TRUE)
+library(chron, quietly = TRUE)
+library(magrittr, quietly = TRUE)
 
 rm_summary_stats <- function(acti) {
   acti <- acti[complete.cases(acti["IntNum"]), ]
