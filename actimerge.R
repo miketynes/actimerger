@@ -62,7 +62,7 @@ reshape_files <- function(acti_files, cutoff = "18:00:00") {
     if (!("IntNum" %in% names(subj_df))) {
       warning(paste(current_file, "has invalid format: skipping."))
       next
-    } 
+    }
     subj_df <- rm_summary_stats(subj_df)
     subj_df <- set_col_classes(subj_df)
     subj_df <- select_custom_down(subj_df)
@@ -70,7 +70,7 @@ reshape_files <- function(acti_files, cutoff = "18:00:00") {
       warning(paste0("Duplicate dates in ", current_file, ": skipping."))
       next
     }
-    if (after_cutoff(subj_df$etime, CUTOFF)) {
+    if (after_cutoff(subj_df$etime, cutoff)) {
       warning(paste0(current_file, " has waketimes times after cutoff."))
     }
     acti_list[[i]] <- subj_df
