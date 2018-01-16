@@ -40,7 +40,7 @@ after_cutoff <- function(x, cutoff) {
   #   x: a vector of time objects (not called 'times' to avoid clobbering)
   #   cutoff: a single h:m:s time string
   # returns:
-  #   bool: if any times are before the cutoff
+  #   bool: if any WAKETIMES are after the cutoff
   
   cutoff <- chron(times. = cutoff)
   return(any(x > cutoff))
@@ -51,7 +51,7 @@ reshape_files <- function(acti_files, cutoff = "18:00:00") {
   # Args:
   #   acti_files: a vector of actigraph filenames
   #   cutoff: h:m:s time string. 
-  #           files with sleep times after the cutoff will throw a warning
+  #           files with WAKETIMES after the cutoff will throw a warning
   # Returns: 
   #   list of reshaped actigraphy dfs 
   
@@ -71,7 +71,7 @@ reshape_files <- function(acti_files, cutoff = "18:00:00") {
       next
     }
     if (after_cutoff(subj_df$etime, CUTOFF)) {
-      warning(paste0(current_file, " has times after cutoff."))
+      warning(paste0(current_file, " has waketimes times after cutoff."))
     }
     acti_list[[i]] <- subj_df
   }
