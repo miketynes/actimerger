@@ -29,6 +29,11 @@ get_down_ints <- function(acti) {
 }
 
 select_custom_down <- function(acti) {
+  # Grabs desired variables from custom and down intervals from acti df
+  # Inteded the specific study this script was built for. 
+  # This method will be refactored or replaced as the program becomes more 
+  # general-user friendly.
+  
   down <- get_down_ints(acti)
   custom <- get_custom_ints(acti)
   result <- merge(custom, down, by = "edate")
