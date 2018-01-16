@@ -36,12 +36,25 @@ select_custom_down <- function(acti) {
 }
 
 after_cutoff <- function(x, cutoff) {
+  # args:
+  #   x: a vector of time objects (not called 'times' to avoid clobbering)
+  #   cutoff: a single h:m:s time string
+  # returns:
+  #   bool: if any times are before the cutoff
+  
   cutoff <- chron(times. = cutoff)
   return(any(x > cutoff))
 }
 
-reshape_files <- function(acti_files) {
-  CUTOFF <- "18:00:00"
+reshape_files <- function(acti_files, cutoff = "18:00:00") {
+  # Loop over acti files, reshape, and append to list
+  # Args:
+  #   acti_files: a vector of actigraph filenames
+  #   cutoff: h:m:s time string. 
+  #           files with sleep times after the cutoff will throw a warning
+  # Returns: 
+  #   list of reshaped actigraphy dfs 
+  
   acti_list <- vector("list", length(acti_files))
   for (i in seq_along(acti_files)) {
     current_file <- acti_files[i]
