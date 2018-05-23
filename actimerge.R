@@ -1,6 +1,7 @@
 library(dplyr, quietly = TRUE)
 library(chron, quietly = TRUE)
 library(magrittr, quietly = TRUE)
+library(stringr, quietly = TRUE)
 
 rm_summary_stats <- function(acti) {
   acti <- acti[complete.cases(acti["IntNum"]), ]
@@ -78,6 +79,11 @@ reshape_files <- function(acti_files, cutoff = "18:00:00") {
     if (after_cutoff(subj_df$etime, cutoff)) {
       warning(paste0(current_file, " has waketimes times after cutoff."))
     }
+    # hairstudy 
+    file_id <- str_extract(current_file, "^[0-9]+")
+    # sleepstudy
+    # file_id <- str_extract(current_file, "C[0-9]{8}(\\(2\\))?_y\\d_[A-Z]{2}")
+    subj_df$file_id <- file_id
     acti_list[[i]] <- subj_df
   }
   return(acti_list)
@@ -89,7 +95,7 @@ path <- commandArgs(trailingOnly = TRUE)
 
 main <- function(path) {
   setwd(path)
-  acti_files <- dir(pattern = ".txt")
+  acti_files <- dir(pattern = "ALL_INT")
   acti_list <- reshape_files(acti_files)
   outframe <- do.call(rbind, acti_list)
   outtime <- format(Sys.time(), "%Y.%m.%d-%H.%M.%S")
