@@ -3,11 +3,15 @@ library(chron, quietly = TRUE)
 library(magrittr, quietly = TRUE)
 library(stringr, quietly = TRUE)
 
+
+#' Delete the summary statsitsics saved in a participant table by AW2
+#' @param acti actigraphy frame: a df of daily level participant data exported by AW2
 rm_summary_stats <- function(acti) {
   acti <- acti[complete.cases(acti["IntNum"]), ]
   return(acti)
 }
 
+#' Set the datatypes of each column in an actigraphy frame to something useful
 set_col_classes <- function(acti) {
   acti$IntName <- factor(acti$IntName)
   acti$etime <- chron(times. = acti$etime, format = c("h:m:s"))
@@ -15,6 +19,7 @@ set_col_classes <- function(acti) {
   return(acti)
 }
 
+#' Select the custom interval data from an acti frame (excluding SOL)
 get_custom_ints <- function(acti) {
   custom_ints <- acti %>% 
     filter(IntName == "Custom") %>% 
@@ -22,6 +27,7 @@ get_custom_ints <- function(acti) {
   return(custom_ints)
 }
 
+#' Get edate and sol from the down intervals of an acti frame. 
 get_down_ints <- function(acti) {
   down_ints <- acti %>% 
     filter(IntName == "Down") %>% 
@@ -29,38 +35,28 @@ get_down_ints <- function(acti) {
   return(down_ints)
 }
 
+#' Grab the desired variables from custom and down intervals from acti df
 select_custom_down <- function(acti) {
-  # Grabs desired variables from custom and down intervals from acti df
-  # Inteded the specific study this script was built for. 
-  # This method will be refactored or replaced as the program becomes more 
-  # general-user friendly.
-  
   down <- get_down_ints(acti)
   custom <- get_custom_ints(acti)
   result <- merge(custom, down, by = "edate")
   result %<>% select(-IntName) 
 }
 
+#' Determine whether any WAKETIMES in an acti frame are after the specified cutoff
+#' @param x a vector of time objects (not called 'times' to avoid clobbering)
+#' @param cutoff a single h:m:s time string
+#' @returns bool: if any WAKETIMES are after the cutoff
 after_cutoff <- function(x, cutoff) {
-  # args:
-  #   x: a vector of time objects (not called 'times' to avoid clobbering)
-  #   cutoff: a single h:m:s time string
-  # returns:
-  #   bool: if any WAKETIMES are after the cutoff
-  
   cutoff <- chron(times. = cutoff)
   return(any(x > cutoff))
 }
 
+#' Loop over acti files, reshape, and append to list
+#' @param acti_files: a vector of actigraph filenames
+#' @param cutoff: h:m:s time string. Files with WAKETIMES after the cutoff will throw a warning
+#' @return list of reshaped actigraphy dfs 
 reshape_files <- function(acti_files, cutoff = "18:00:00") {
-  # Loop over acti files, reshape, and append to list
-  # Args:
-  #   acti_files: a vector of actigraph filenames
-  #   cutoff: h:m:s time string. 
-  #           files with WAKETIMES after the cutoff will throw a warning
-  # Returns: 
-  #   list of reshaped actigraphy dfs 
-  
   acti_list <- vector("list", length(acti_files))
   for (i in seq_along(acti_files)) {
     current_file <- acti_files[i]
@@ -80,9 +76,9 @@ reshape_files <- function(acti_files, cutoff = "18:00:00") {
       warning(paste0(current_file, " has waketimes times after cutoff."))
     }
     # hairstudy 
-    file_id <- str_extract(current_file, "^[0-9]+")
+    # file_id <- str_extract(current_file, "^[0-9]+")
     # sleepstudy
-    # file_id <- str_extract(current_file, "C[0-9]{8}(\\(2\\))?_y\\d_[A-Z]{2}")
+    file_id <- str_extract(current_file, "C[0-9]{8}(\\(2\\))?_y\\d_[A-Z]{2}")
     subj_df$file_id <- file_id
     acti_list[[i]] <- subj_df
   }
