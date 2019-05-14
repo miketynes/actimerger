@@ -27,3 +27,4 @@ Actimerger will select the desired variables from each file, merge them into one
 
 ## Dependencies 
 Currently depends on dplyr, magrittr, and chron, although the tidyverse libraries are barely used and may be factored out.
+
